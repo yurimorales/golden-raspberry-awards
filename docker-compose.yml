@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Movielist.csv:/usr/src/app/Movielist.csv
