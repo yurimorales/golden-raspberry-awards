@@ -16,7 +16,7 @@ Projeto nodejs, utilizando sqlite, para listar os piores filmes da história
    ```
 
 3. **Access the API:**
-   A API fica disponivel no endereço `http://localhost:3000`. Usar o postman ou o isomnia para testar os endpoints da api.
+   A API fica disponivel no endereço `http://localhost:3000`. Usar o postman ou o insomnia para testar os endpoints da api.
 
 ## Usage
 
