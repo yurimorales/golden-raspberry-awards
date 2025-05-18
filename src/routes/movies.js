@@ -1,13 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db/crud");
+const validateMovie = require("../middleware/validateMovie"); // Adicione esta linha
 
 router.get("/", async (req, res) => {
   try {
-    const movies = await db.getAllMovies();
+    const movies = await db.getMoviesByFilter(req.query);
     res.json(movies);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving movies" });
+  }
+});
+
+router.get("/awards-intervals", async (req, res) => {
+  try {
+    const result = await db.getAwardsIntervals();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "Error calculating intervals" });
   }
 });
 
@@ -24,7 +34,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateMovie, async (req, res) => {
   try {
     const addMovie = await db.createMovie(req.body);
     res.status(201).json(addMovie);
@@ -33,7 +43,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", validateMovie, async (req, res) => {
   try {
     const updatedMovie = await db.updateMovie(req.params.id, req.body);
     if (!updatedMovie) {

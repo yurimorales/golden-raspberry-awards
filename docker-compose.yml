@@ -8,4 +8,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules # volume anonimo do node_modules, para não sobrescrever o node_modules do container
       - ./Movielist.csv:/usr/src/app/Movielist.csv
+    environment:
+      - NODE_ENV=development

@@ -11,10 +11,15 @@ app.use("/api/movies", movieRoutes);
 
 initDb()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
-    });
+    // Só inicia o servidor se o arquivo for executado diretamente (não durante testes)
+    if (require.main === module) {
+      app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+      });
+    }
   })
   .catch((err) => {
     console.error("Database initialization failed:", err);
   });
+
+module.exports = app;

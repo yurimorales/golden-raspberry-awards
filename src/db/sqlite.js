@@ -1,13 +1,19 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
-const fs = require('fs');
+const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
+const fs = require("fs");
 
-const dbFile = path.join(__dirname, '../../movies.db');
-const csvFile = path.join(__dirname, '../../Movielist.csv');
+const dbFile = ":memory:";
+const csvFile = path.join(__dirname, "../../Movielist.csv");
+
+let db; // Instância global
+
+function getDb() {
+  return db;
+}
 
 function initDb() {
   return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(dbFile, (err) => {
+      db = new sqlite3.Database(dbFile, (err) => {
       if (err) return reject(err);
 
       db.serialize(() => {
@@ -24,18 +30,19 @@ function initDb() {
             if (err) return reject(err);
 
             // Popula o banco se estiver vazio
-            db.get('SELECT COUNT(*) as count FROM movies', (err, row) => {
+            db.get("SELECT COUNT(*) AS count FROM movies", (err, row) => {
               if (err) return reject(err);
               if (row.count === 0) {
                 // Lê e insere do CSV
-                const csvData = fs.readFileSync(csvFile, 'utf8');
-                const rows = csvData.split('\n').slice(1);
+                const csvData = fs.readFileSync(csvFile, "utf8");
+                const rows = csvData.split("\n").slice(1);
                 const stmt = db.prepare(
-                  'INSERT INTO movies (year, title, studios, producers, winner) VALUES (?, ?, ?, ?, ?)'
+                  "INSERT INTO movies (year, title, studios, producers, winner) VALUES (?, ?, ?, ?, ?)"
                 );
                 for (const row of rows) {
                   if (row.trim()) {
-                    const [year, title, studios, producers, winner] = row.split(';');
+                    const [year, title, studios, producers, winner] =
+                      row.split(";");
                     stmt.run(year, title, studios, producers, winner || null);
                   }
                 }
@@ -51,4 +58,4 @@ function initDb() {
   });
 }
 
-module.exports = { initDb, dbFile };
+module.exports = { initDb, getDb };
