@@ -103,7 +103,7 @@ npm test
 
 ### Como rodar um teste específico
 
-Você pode rodar apenas um teste específico adicionando `.only` ao `it` desejado:
+É possível rodar apenas um teste específico adicionando `.only` ao `it` desejado:
 
 ```javascript
 it.only("Deve falhar se um campo obrigatório estiver faltando no CSV", async () => { ... });
@@ -114,7 +114,7 @@ it.only("Deve falhar se um campo obrigatório estiver faltando no CSV", async ()
 
 - O banco de dados é criado em memória e populado automaticamente a partir do arquivo CSV sempre que a aplicação é iniciada.
 - Os testes de integração podem ser executados quantas vezes quiser, pois o banco é sempre recriado.
-- Os testes negativos são requeridos para garantir que a API rejeita ou identifica dados inconsistentes.
+- Os testes negativos são requeridos para garantir que a API rejeite ou identifique dados inconsistentes.
 
 ## Endpoints
 
